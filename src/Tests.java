@@ -1,9 +1,14 @@
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Tests {
 
+    @Before
+    public void before() {
+        System.out.println();
+    }
     @Test(expected = NullPointerException.class)
     public void test_null() {
         Integer.decode(null);
@@ -36,7 +41,13 @@ public class Tests {
     }
 
     @Test
-    public void test_hexadecimal_2() {
+    public void test_hexadecimal_with_big_X() {
+        assertEquals(Integer.valueOf(666), Integer.decode("0X29A"));
+        assertEquals(Integer.valueOf(-666), Integer.decode("-0X29A"));
+    }
+
+    @Test
+    public void test_hexadecimal_with_sharp() {
         assertEquals(Integer.valueOf(666), Integer.decode("#29A"));
         assertEquals(Integer.valueOf(-666), Integer.decode("-#29A"));
     }
@@ -49,6 +60,7 @@ public class Tests {
 
     @Test (expected = NumberFormatException.class)
     public void test_sign_wrong_position() {
+        Integer.decode("++111");
         Integer.decode("1+11");
         Integer.decode("11+1");
         Integer.decode("111++");
@@ -58,16 +70,12 @@ public class Tests {
     public void test_space() {
         Integer.decode(" 501");
         Integer.decode("501 ");
+        Integer.decode("   5 01   ");
     }
 
     @Test
     public void test_integer_min_max() {
-        assertDoesNotThrow(() -> Integer.decode(String.valueOf(Integer.MIN_VALUE)));
-        assertDoesNotThrow(() -> Integer.decode(String.valueOf(Integer.MAX_VALUE)));
+        assertEquals(Integer.MIN_VALUE, Integer.decode(String.valueOf(Integer.MIN_VALUE)));
+        assertEquals(Integer.MAX_VALUE, Integer.decode(String.valueOf(Integer.MAX_VALUE)));
     }
-
-//    @Test
-//    public void test_first_space() {
-//        assertEquals(501, Integer.decode(" 501"));
-//    }
 }
