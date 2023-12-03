@@ -5,10 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Tests {
 
-    @Before
-    public void before() {
-        System.out.println();
-    }
     @Test(expected = NullPointerException.class)
     public void test_null() {
         Integer.decode(null);
